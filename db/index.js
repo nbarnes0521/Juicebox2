@@ -183,6 +183,23 @@ async function getPostsByUser(userId) {
   }
 }
 
+async function getAllTags() {
+    const client = new Client();
+    await client.connect();
+  
+    try {
+      const query = 'SELECT * FROM tags;';
+      const result = await client.query(query);
+      return result.rows;
+    } catch (error) {
+      console.error('Error fetching tags:', error);
+      throw error;
+    } finally {
+      await client.end();
+    }
+  }
+  
+
 module.exports = {
   client,
   createUser,
@@ -192,10 +209,11 @@ module.exports = {
   createPost,
   updatePost,
   getAllPosts,
-  getPostsByUser
+  getPostsByUser,
+  getAllTags
 };
 
-  // npm run seed:dev (To run)
+  // npm run seed:dev (To run database)
 
 
 
