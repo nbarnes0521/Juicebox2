@@ -21,6 +21,23 @@ const client = new Client('postgres://localhost:5432/juicebox-dev');
   }
 }
 
+
+async function getAllTags() {
+  const client = new Client();
+  await client.connect();
+
+  try {
+    const query = 'SELECT * FROM tags;';
+    const result = await client.query(query);
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching tags:', error);
+    throw error;
+  } finally {
+    await client.end();
+  }
+}
+
 async function createPostTag(postId, tagId) {
     try {
       await client.query(`
@@ -162,15 +179,22 @@ async function getUserById(userId) {
   }
 }
 
-async function createPost({ authorId, title, content }) {
+async function createPost({
+  authorId,
+  title,
+  content,
+  tags = [] // this is new
+}) {
   try {
-    const { rows: [post] } = await client.query(`
-      INSERT INTO posts("authorId", title, content)
+    const { rows: [ post ] } = await client.query(`
+      INSERT INTO posts("authorId", title, content) 
       VALUES($1, $2, $3)
       RETURNING *;
     `, [authorId, title, content]);
 
-    return post;
+    const tagList = await createTags(tags);
+
+    return await addTagsToPost(post.id, tagList);
   } catch (error) {
     throw error;
   }
@@ -268,21 +292,7 @@ async function getPostsByUser(userId) {
   }
 }
 
-async function getAllTags() {
-    const client = new Client();
-    await client.connect();
-  
-    try {
-      const query = 'SELECT * FROM tags;';
-      const result = await client.query(query);
-      return result.rows;
-    } catch (error) {
-      console.error('Error fetching tags:', error);
-      throw error;
-    } finally {
-      await client.end();
-    }
-  }
+
   
 
 module.exports = {
