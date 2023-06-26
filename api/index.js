@@ -10,6 +10,7 @@ apiRouter.use('/users', usersRouter);
 const postsRouter = require('./posts');
 apiRouter.use('/posts', postsRouter);
 
+// TAGS //
 const tagsRouter = require('./tags');
 apiRouter.use('/tags', tagsRouter);
 
