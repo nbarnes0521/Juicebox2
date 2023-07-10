@@ -17,3 +17,5 @@ usersRouter.get('/', async (req, res) => {
 });
 
 module.exports = usersRouter;
+
+// http://localhost:3000/api/users
