@@ -207,6 +207,7 @@ const {
       await createTables();
       await createInitialUsers();
       await createInitialPosts();
+      await createInitialTags();
     } catch (error) {
       console.log("Error during rebuildDB")
       throw error;
@@ -230,9 +231,19 @@ const {
       // });
       // console.log("Result:", updateUserResult);
   
-      // console.log("Calling getAllPosts");
-      // const posts = await getAllPosts();
-      // console.log("Result:", posts);
+      console.log("Calling getAllPosts");
+      const posts = await getAllPosts();
+      console.log("Result:", posts);
+
+      // console.log("Calling getPostsByUser");
+      // const userId = 1;
+      
+      // try {
+      //   const posts = await getPostsByUser(userId);
+      //   console.log("Result:", posts);
+      // } catch (error) {
+      //   console.error("Error:", error);
+      // }      
   
       // console.log("Calling updatePost on posts[0]");
       // const updatePostResult = await updatePost(posts[0].id, {

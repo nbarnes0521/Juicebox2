@@ -23,3 +23,4 @@ server.listen(PORT, () => {
 
 
 // npm run start:dev
+// npm run seed:dev
