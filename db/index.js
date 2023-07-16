@@ -84,6 +84,27 @@ async function getUserById(userId) {
   }
 }
 
+async function getUserByUsername(username) {
+  try {
+    const { rows: [ user ] } = await client.query(`
+      SELECT *
+      FROM users
+      WHERE username=$1
+    `, [ username ]);
+
+    if (!user) {
+      throw {
+        name: "UserNotFoundError",
+        message: "A user with that username does not exist"
+      }
+    }
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 /**
  * POST Methods
  */
@@ -335,7 +356,8 @@ module.exports = {
   createTags,
   getAllTags,
   createPostTag,
-  addTagsToPost
+  addTagsToPost,
+  getUserByUsername
 }
 
   // npm run seed:dev (To run database)
