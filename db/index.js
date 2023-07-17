@@ -84,6 +84,7 @@ async function getUserById(userId) {
   }
 }
 
+// GET USERNAME FOR LOGIN ///
 async function getUserByUsername(username) {
   try {
     const { rows: [ user ] } = await client.query(`
@@ -100,6 +101,21 @@ async function getUserByUsername(username) {
     }
 
     return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// EDITED USERNAME FINDER FOR REGISTER ////////
+async function findingUsername(username) {
+  try {
+    const { rows: [ user ] } = await client.query(`
+      SELECT *
+      FROM users
+      WHERE username=$1
+    `, [ username ]);
+
+    return user || null; 
   } catch (error) {
     throw error;
   }
@@ -357,10 +373,12 @@ module.exports = {
   getAllTags,
   createPostTag,
   addTagsToPost,
-  getUserByUsername
+  getUserByUsername,
+  findingUsername
 }
 
-  // npm run seed:dev (To run database)
+  /* npm run seed:dev 
+  (To run database) */
 
 
 
